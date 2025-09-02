@@ -1,20 +1,28 @@
 import asyncio
+import pathlib
+from MiraiCraftLauncherLib.core.utils.net.web import client
 
-current_thread_count = 64
+current_thread_count = asyncio.Semaphore(64)
 
 class NetFile:
     def __init__(self,sources:list[str],path:str,start_size:int,end_size:int,algorithm:str,hash:str):
         self.sources = sources
-        self.path = path
+        self.path = pathlib.Path(path)
         self.start_position = start_size
         self.end_position = end_size
         self.algorithm = algorithm
         self.hash = hash
         self.is_spilted = False
         self.total_size = end_size - start_size
+        self.file_objs:list[NetFile] = []
     async def download(self):
         """启动一个协程下载文件"""
-        pass
+        async with current_thread_count:
+            for source_url in self.sources:
+                async with client.request("GET",source_url) as response:
+                    with self.path.open("wb") as f:
+                        for chunck in response.content.iter_chunked(16384):
+                            f.write(chunck)
     def get_spilt(self) -> list:
         """获取 NetFile 的分片"""
         split_size = self.end_position // current_thread_count
@@ -35,6 +43,8 @@ class NetFile:
             )
             file_obj.is_spilted = True
             tasks.append(file_obj)
+            self.file_objs = tasks
+            return tasks
         if size_left:
             file_obj = NetFile(
                 sources = self.sources,
@@ -45,6 +55,21 @@ class NetFile:
                 hash=""
             )
         return tasks
+    def merge_file(self):
+        with self.path.open("wb") as f:
+            for file in self.file_objs:
+                with file.path.open("rb") as file_spilt:
+                    while True:
+                        chunck = file_spilt.read(16384)
+                        if not chunck:
+                            break
+                        f.write(chunck)
+                    file.path.unlink(True)
+    
+            
 
 class NetTask:
-    pass
+    def __init__(self,tasks:list[NetFile]):
+        self.tasks = tasks
+    def try_download(self):
+        pass
