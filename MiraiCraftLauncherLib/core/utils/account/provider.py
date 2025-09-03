@@ -1,0 +1,2 @@
+class AccountServiceProvider:
+    pass
