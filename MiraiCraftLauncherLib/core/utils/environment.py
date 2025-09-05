@@ -1,35 +1,21 @@
+import stat
 import platform
 import os
 import pathlib
+import getpass
+from MiraiCraftLauncherLib.core.utils.system.os.info import system_type,SystemType
+
 app_debug = True
 
-minecraft_folder ={
-    "current":{
-        "name":"launcher.minecraft.path.default",
-        "path":{
-            "condition":{
-                "on-all-os":"${appenv:executable_path}",
-            }
-        },
-        "versions":[],
-    },
-    "official":{
-        "name":"launcher.minecraft.path.official",
-        "path":{
-            "condition":{
-                "on-windows":{
-                    "path":"${osenv:appdata}/.minecraft"
-                },
-                "on-other":{
-                    "path":"${path:linux_user_home}/.minecraft"
-                },
-            }
-        },
-        "versions":[]
-    }
-}
+executable_path = ""
 
-easy_tier_path = "${appenv:application_data}"
+app_data = f"{executable_path}/data/{getpass.getuser()}" if SystemType.Windows == system_type else f"/etc/MiraiCL/{getpass.getuser()}/data"
 
-def get_full_path(path:str):
-    return pathlib.Path(path.replace("${osenv:appdata}",os.getenv("appdata")).replace("${path:linux_user_home}","~").replace("${appenv:application_data}",""))
+minecraft_folder = os.getenv("appdata") if system_type == SystemType.Windows else pathlib.Path.home().joinpath(".minecraft")
+
+easy_tier_path = f"{app_data}/link/core/easytier"
+
+secret_path = pathlib.Path(f"{app_data}/secret")
+
+if stat.S_IMODE(secret_path.stat().st_mode) != 600:
+    secret_path.chmod(600)

@@ -22,5 +22,7 @@ class Process:
             await asyncio.sleep(2.5)
             if self._process.poll():
                 self._process.kill()
-
-elevate.elevate()
+    @staticmethod
+    def exec_in_shell_output(cmd:str,arguments:list[str],timeout:int = 5):
+        process = subprocess.Popen(arguments,executable=cmd,shell=True)
+        process.wait()
