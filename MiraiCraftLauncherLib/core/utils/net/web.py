@@ -54,8 +54,8 @@ async def request_retry(
     if lastException:
         raise lastException
 
-async def download_string(url:str,headers:dict[str,str]):
-    pass
+async def download_string(url:str,headers:dict[str,str]) -> str:
+    return (await request_retry(url,"GET",headers)).text("utf-8")
 
 def secret_sign(url:str,headers:dict[str,str]):
     if "api.curseforge.com" in url:
