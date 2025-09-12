@@ -57,6 +57,18 @@ async def request_retry(
 async def download_string(url:str,headers:dict[str,str]) -> str:
     return (await request_retry(url,"GET",headers)).text("utf-8")
 
+async def request_with_multiple_source(
+        urls:list[str],
+        method:str = "GET",
+        headers:dict[str,str] = {},
+        data=None,
+        timeout:int=25000,
+        content_type:str = "application/json",
+        accept:str = "application/json",
+):
+    for url in urls:
+        return await request(url,method,headers,data,timeout,content_type,accept)
+
 def secret_sign(url:str,headers:dict[str,str]):
     if "api.curseforge.com" in url:
         headers["x-api-key"] = curseforge_api_key

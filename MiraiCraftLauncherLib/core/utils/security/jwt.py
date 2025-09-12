@@ -4,6 +4,7 @@ from MiraiCraftLauncherLib.core.utils.system.text.json import get_jtoken
 from MiraiCraftLauncherLib.core.utils.net.web import download_string
 
 async def validate_jwt_signature(jtoken:str,openid_condigure_addr:str,client_id:str):
+    """验证 JWT 签名，并返回 payload"""
     try:
         configure = get_jtoken(download_string(openid_condigure_addr))
         jwk_url = configure.get("jwks_uri")
@@ -14,7 +15,7 @@ async def validate_jwt_signature(jtoken:str,openid_condigure_addr:str,client_id:
         for key in jwks.items():
             current_kid = key.get("kid")
             if kid == current_kid:
-                
-        pass
+                jwk = jwt.PyJWK(key)
+                return jwt.decode(jtoken,jwk.key,algorithm)
     except Exception as e:
-        return False
+        return ""

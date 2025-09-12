@@ -19,3 +19,20 @@ secret_path = pathlib.Path(f"{app_data}/secret")
 
 if stat.S_IMODE(secret_path.stat().st_mode) != 600:
     secret_path.chmod(600)
+
+current_minecraft_path = ""
+
+os_name = platform.system()
+
+arch = platform.machine()
+    
+authlib_injector = pathlib.Path(app_data,"thridparty","authlib-injector.jar")
+
+def get_system_arch():
+    if arch.lower() == "amd64":
+        return "x64"
+    elif arch.lower() == "aarch64":
+        return "arm64"
+    elif arch.lower() == "i386":
+        return "x86"
+    return ""

@@ -17,7 +17,7 @@ def get_or_init_webserver():
         app = web.Application()
     return app
 
-def start(required_port:int = None) -> int:
+def startup(required_port:int = None) -> int:
     global runner
     if required_port:
         try:
@@ -34,3 +34,7 @@ def start(required_port:int = None) -> int:
 
 def add_route(path:str,method:str,handler:function):
     app.add_routes([support_method.get(method.upper())(path,handler)])
+
+async def shutdown():
+    logger.info("[WebServer] 正在关闭 Web 服务器")
+    await app.shutdown()

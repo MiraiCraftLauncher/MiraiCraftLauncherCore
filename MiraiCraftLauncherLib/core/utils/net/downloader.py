@@ -5,9 +5,9 @@ from MiraiCraftLauncherLib.core.utils.net.web import client
 current_thread_count = asyncio.Semaphore(64)
 
 class NetFile:
-    def __init__(self,sources:list[str],path:str,start_size:int,end_size:int,algorithm:str,hash:str):
+    def __init__(self,sources:list[str],path:pathlib.Path,start_size:int,end_size:int,algorithm:str,hash:str):
         self.sources = sources
-        self.path = pathlib.Path(path)
+        self.path = path
         self.start_position = start_size
         self.end_position = end_size
         self.algorithm = algorithm
