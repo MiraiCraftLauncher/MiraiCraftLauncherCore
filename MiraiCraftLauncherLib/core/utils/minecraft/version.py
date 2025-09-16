@@ -1,6 +1,6 @@
 from MiraiCraftLauncherLib.core.utils.sources.minecraft import get_version_source
 from MiraiCraftLauncherLib.core.utils.net.cache import cache_string_multiple
-from MiraiCraftLauncherLib.core.utils.system.text.json import get_jtoken
+from MiraiCraftLauncherLib.core.utils.system.text.jtoken import get_jtoken
 
 versions = None
 

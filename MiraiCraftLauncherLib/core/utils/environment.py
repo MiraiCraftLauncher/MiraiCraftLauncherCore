@@ -1,9 +1,18 @@
+import certifi
+import ssl
 import stat
 import platform
 import os
 import pathlib
 import getpass
+import json
 from MiraiCraftLauncherLib.core.utils.system.os.info import system_type,SystemType
+from enum import Enum
+from MiraiCraftLauncherLib.core.utils.system.text.jtoken import get_jtoken
+
+class ConfigProvider(Enum):
+    File = 0
+    Registry = 1
 
 app_debug = True
 
@@ -36,3 +45,15 @@ def get_system_arch():
     elif arch.lower() == "i386":
         return "x86"
     return ""
+
+config = app_data + "/config/launcher.yml"
+
+config_provider = ConfigProvider.File
+
+context = ssl.create_default_context(cafile=certifi.where()) if os.getenv("MIRAICL_ENSURE_SECURE_SSL") else ssl.create_default_context()
+
+cache_response_data_path = pathlib.Path(app_data + "/cache/web/request.json")
+
+data_handle_obj = cache_response_data_path.open("r+")
+
+cache_response = get_jtoken(data_handle_obj.read())

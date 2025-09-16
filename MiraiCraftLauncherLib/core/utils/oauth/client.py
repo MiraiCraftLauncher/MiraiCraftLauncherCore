@@ -3,7 +3,7 @@ from MiraiCraftLauncherLib.core.utils.net.web import request_retry
 from MiraiCraftLauncherLib.core.models.exceptions.AuthenticationException import *
 from MiraiCraftLauncherLib.core.utils.net.web import download_string
 from MiraiCraftLauncherLib.core.utils.security import hash
-from MiraiCraftLauncherLib.core.utils.system.text.json import get_jtoken
+from MiraiCraftLauncherLib.core.utils.system.text.jtoken import get_jtoken
 from MiraiCraftLauncherLib.core.utils.system.text.secret import get_encrypt_safe_random_int
 from urllib import parse
 import secrets

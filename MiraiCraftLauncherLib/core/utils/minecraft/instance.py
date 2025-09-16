@@ -1,6 +1,6 @@
 from MiraiCraftLauncherLib.core.utils.setup import setup
 from MiraiCraftLauncherLib.core.utils.minecraft.version import get_version_info_by_release_time
-from MiraiCraftLauncherLib.core.utils.system.text.json import to_jstring
+from MiraiCraftLauncherLib.core.utils.system.text.jtoken import to_jstring
 from datetime import datetime
 import pathlib
 instances = []

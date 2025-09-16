@@ -1,6 +1,6 @@
 from MiraiCraftLauncherLib.core.utils.net.cache import cache_string
 from MiraiCraftLauncherLib.core.utils.net.downloader import NetFile,NetTask
-from MiraiCraftLauncherLib.core.utils.system.text.json import get_jtoken
+from MiraiCraftLauncherLib.core.utils.system.text.jtoken import get_jtoken
 from MiraiCraftLauncherLib.core.utils.sources.minecraft import get_file_source
 from MiraiCraftLauncherLib.core.utils.environment import current_minecraft_path,os_name,get_system_arch
 from version import get_version_info

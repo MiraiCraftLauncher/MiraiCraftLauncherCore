@@ -1,6 +1,6 @@
 import jwt
 
-from MiraiCraftLauncherLib.core.utils.system.text.json import get_jtoken
+from MiraiCraftLauncherLib.core.utils.system.text.jtoken import get_jtoken
 from MiraiCraftLauncherLib.core.utils.net.web import download_string
 
 async def validate_jwt_signature(jtoken:str,openid_condigure_addr:str,client_id:str):
