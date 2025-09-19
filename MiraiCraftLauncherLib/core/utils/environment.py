@@ -5,7 +5,7 @@ import platform
 import os
 import pathlib
 import getpass
-import json
+import sys
 from MiraiCraftLauncherLib.core.utils.system.os.info import system_type,SystemType
 from enum import Enum
 from MiraiCraftLauncherLib.core.utils.system.text.jtoken import get_jtoken
@@ -16,15 +16,20 @@ class ConfigProvider(Enum):
 
 app_debug = True
 
-executable_path = ""
+executable_path = pathlib.Path(sys.executable).parent
 
 app_data = f"{executable_path}/data/{getpass.getuser()}" if SystemType.Windows == system_type else f"/etc/MiraiCL/{getpass.getuser()}/data"
+
+print(system_type)
 
 minecraft_folder = os.getenv("appdata") if system_type == SystemType.Windows else pathlib.Path.home().joinpath(".minecraft")
 
 easy_tier_path = f"{app_data}/link/core/easytier"
 
 secret_path = pathlib.Path(f"{app_data}/secret")
+
+if not secret_path.exists():
+    secret_path.mkdir(600,True,True)
 
 if stat.S_IMODE(secret_path.stat().st_mode) != 600:
     secret_path.chmod(600)
@@ -54,6 +59,10 @@ context = ssl.create_default_context(cafile=certifi.where()) if os.getenv("MIRAI
 
 cache_response_data_path = pathlib.Path(app_data + "/cache/web/request.json")
 
+if not cache_response_data_path.exists():
+    cache_response_data_path.parent.mkdir(parents=True,exist_ok=True)
+    cache_response_data_path.touch()
+
 data_handle_obj = cache_response_data_path.open("r+")
 
-cache_response = get_jtoken(data_handle_obj.read())
+cache_responses = get_jtoken(data_handle_obj.read())

@@ -20,19 +20,19 @@ logger.add(
     level="INFO"         
 )
 
-def debug(module:str,message:str):
-    logger.debug(f"[{module}] {message}")
+def debug(module:str,message:str,trace:bool = False):
+    logger.opt(exception=trace).debug(f"[{module}] {message}")
 
-def info(module:str,message:str):
-    logger.info(f"[{module}] {message}")
+def info(module:str,message:str,trace:bool = False):
+    logger.opt(exception=trace).info(f"[{module}] {message}")
 
-def warning(module:str,message:str):
-    logger.warning(f"[{module}] {message}")
+def warning(module:str,message:str,trace:bool = False):
+    logger.opt(exception=trace).warning(f"[{module}] {message}")
 
-def error(module:str,message:str):
-    logger.opt(exception=True).error(f"[{module}] {message}")
+def error(module:str,message:str,trace:bool = True):
+    logger.opt(exception=trace).error(f"[{module}] {message}")
 
-def fatal(module:str,message:str):
-    logger.exception(f"[{module}] {message}")
+def fatal(module:str,message:str,trace:bool = True):
+    logger.opt(exception=trace).error(f"[{module}] {message}")
     sys.exit(1)
 

@@ -1,21 +1,26 @@
 from urllib.request import getproxies
 from urllib.parse import quote
+from MiraiCraftLauncherLib.core.utils.runtime import logger
 
 class WebProxyFactory:
-    user_proxy = {}
+    user_proxy = None
     proxy = None
     disable_proxy = False
     @staticmethod
     def update_proxy():
         if WebProxyFactory.user_proxy:
             WebProxyFactory.proxy = WebProxyFactory.user_proxy
-            return
         _proxy = getproxies()
-        _proxy["http://"] = _proxy.get("http")
-        _proxy["https://"] = _proxy.get("https")
-        if WebProxyFactory.proxy != _proxy:
+        http = _proxy.get("http")
+        https = _proxy.get("https")
+        if http:
+            _proxy["http://"] = http
+        if https:
+            _proxy["https://"] = https
+        if _proxy and WebProxyFactory.proxy != _proxy:
             WebProxyFactory.proxy = _proxy
             return True
+        logger.debug("Network",f"当前系统代理为 {WebProxyFactory.proxy}")
         return False
     @staticmethod
     def setup_user_proxy(proxy_addr:str,proxy_port:int,proxy_user:str,proxy_password:str):

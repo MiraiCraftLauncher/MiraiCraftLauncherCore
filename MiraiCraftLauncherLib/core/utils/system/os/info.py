@@ -9,7 +9,15 @@ class SystemType(Enum):
 
 system_name = system()
 
-system_type = ""
+def get_os_type():
+    if "win" in system_name.lower():
+        return SystemType.Windows
+    elif "osx" in system_name.lower() or "macos" in system_name.lower():
+        return SystemType.macOS
+    else:
+        return SystemType.Linux
+
+system_type = get_os_type()
 
 def get_system_type():
     os_name = system_name.lower()
