@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"github.com/MiraiCL/MiraiCL.Core/base/net"
 	"github.com/MiraiCL/MiraiCL.Core/models/minecraft"
+	"github.com/MiraiCL/MiraiCL.Core/base/helper"
 )
 
-var versionIndex minecraft.VersionList
+var versionIndex *minecraft.VersionList
 
 func VersionIndex() error {
 	resp,err := net.NewHttpRequestBuilder("","").Execute()
@@ -27,10 +28,32 @@ func VersionIndex() error {
 }
 
 func ReadVersionInfo(version string) *minecraft.Version{
-	if version == nil {
+	if versionIndex == nil {
 		VersionIndex()
 	}
+	if helper.IsBlank(version) {
+		return nil
+	}
 	for _,v := range versionIndex.Versions{
-		if v.Id ==
-	}	
+		if v.Id == version{
+			return &v
+		}
+	}
+	return nil
+}
+
+func AnalyzeMissingLibrary(){
+
+}
+
+func AnalyzeMissingAsset(){
+
+}
+
+func AnalyzeLibrary(){
+
+}
+
+func AnalyzeAsset(){
+	
 }
